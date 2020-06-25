@@ -5,7 +5,7 @@ public class MultiGiocatore {
 	}
 	void myRun(){
 		for (int i=0; i<15; i++) {
-		new Giocatore(i);}
+		new Player(i);}
 		
 	}
 	public static void main(String[] args) {
