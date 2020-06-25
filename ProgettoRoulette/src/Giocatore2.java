@@ -9,6 +9,7 @@ import java.rmi.registry.LocateRegistry;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Giocatore2 extends UnicastRemoteObject implements GiocatoreInterface2{
+	
 	private static final long serialVersionUID = 1L;
 	
 	private String ID; 
