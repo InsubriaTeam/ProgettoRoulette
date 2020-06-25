@@ -27,7 +27,7 @@ public class Player extends Thread {
 
 	// ---------------------
 
-	public synchronized void Bet() throws RemoteException {
+	public synchronized void bet() throws RemoteException {
 
 		ArrayList<Double> allQuote = new ArrayList<Double>();
 		ArrayList<Integer> allNum = new ArrayList<Integer>();
