@@ -1,4 +1,4 @@
 
-public class deleteme {
+public class Giocatore{
 
 }
