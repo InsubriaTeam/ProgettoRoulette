@@ -1,12 +1,10 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.awt.*;
-import java.rmi.server.UnicastRemoteObject;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Player extends Thread{
 	
@@ -14,28 +12,27 @@ public class Player extends Thread{
 	double quote; 
 	int number; 
 	int play=5;
-	Roulette r;
+	RouletteInterface ri;
 	
-	/*public void notifica(String vincita) throws RemoteException{
-		System.out.println(ID+": vincita pari a "+vincita);
-	}*/
 	
 	public Player (int id)  {
 		//creata sessione di gioco
 		try {
-			Registry registro = LocateRegistry.getRegistry();
-			Roulette r = (Roulette) registro.lookup("Roulette");
-			new Giocatore2(r);
-		} catch (RemoteException | NotBoundException e) {	}  
+			Registry reg = LocateRegistry.getRegistry();
+			ri = (RouletteInterface)reg.lookup("Roulette");
+			
+		} catch (RemoteException | NotBoundException e) {
+			e.printStackTrace();
+		}  
 	}
 
 
 	//---------------------
 	
 	public synchronized void Bet() throws RemoteException{
-		
-		ArrayList allQuote= new ArrayList<>();
-		ArrayList allNum = new ArrayList<>();
+
+		ArrayList<Double> allQuote= new ArrayList<Double>();
+		ArrayList<Integer> allNum = new ArrayList<Integer>();
 		
 		Scanner s = new Scanner(System.in);
 		System.out.print("Inserisci il tuo ID");
@@ -46,7 +43,7 @@ public class Player extends Thread{
 		while((risposta.toUpperCase()).equals("Y")) {
 				
 			System.out.println("Inserisci la quota da scommettere");
-			float quote = s.nextFloat();
+			double quote = s.nextFloat();
 			
 			allQuote.add(quote);
 			
@@ -62,7 +59,7 @@ public class Player extends Thread{
 		
 		if (quote==0) {play=play-1;
 						if (play==0) {/*TODO SISTEMARE IL METODO OUT DA ROULETTE */}}
-		
+		s.close();
 		
 		
 		
