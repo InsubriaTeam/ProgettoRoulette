@@ -6,64 +6,72 @@ import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
 
-public class Player extends Thread{
-	
-	int id; 
-	double quote; 
-	int number; 
-	int play=5;
+public class Player extends Thread {
+
+	int id;
+	double quote = 0;
+	int number;
+	int play = 5;
 	RouletteInterface ri;
-	
-	
-	public Player (int id)  {
-		//creata sessione di gioco
+
+	public Player(int id) {
+		// creata sessione di gioco
 		try {
 			Registry reg = LocateRegistry.getRegistry();
-			ri = (RouletteInterface)reg.lookup("Roulette");
-			
+			ri = (RouletteInterface) reg.lookup("Roulette");
+
 		} catch (RemoteException | NotBoundException e) {
 			e.printStackTrace();
-		}  
+		}
 	}
 
+	// ---------------------
 
-	//---------------------
-	
-	public synchronized void Bet() throws RemoteException{
+	public synchronized void Bet() throws RemoteException {
 
-		ArrayList<Double> allQuote= new ArrayList<Double>();
+		ArrayList<Double> allQuote = new ArrayList<Double>();
 		ArrayList<Integer> allNum = new ArrayList<Integer>();
-		
+
 		Scanner s = new Scanner(System.in);
 		System.out.print("Inserisci il tuo ID");
-		String ID = s.nextLine();
-		
-		String risposta="Y";
-		
-		while((risposta.toUpperCase()).equals("Y")) {
-				
+		int id = s.nextInt();
+
+		String risposta = "Y";
+
+		while ((risposta.toUpperCase()).equals("Y")) {
+
+			risposta = "Z";
+
 			System.out.println("Inserisci la quota da scommettere");
 			double quote = s.nextFloat();
-			
+
 			allQuote.add(quote);
-			
-			System.out.println("Inserisci il numero preferito"); 
-			int number = s.nextInt();
-			
-			allNum.add(number);
-			
-			System.out.println("Vuoi fare un'altra scommessa? Y/N");
-			risposta=s.nextLine().toUpperCase();
-		
+
+			int number = -1; // obbligo ad entrare nel while
+
+			while ((number < 0) || (number > 37)) {
+				System.out.println("Inserisci il numero da 0 a 37");
+				number = s.nextInt();
+				if ((number < 0) || (number > 37)) {
+					System.out.println("Mi dispiace, il numero non è valido");
+				} else {
+					allNum.add(number);
+				}
+			}
+
+			do {
+				System.out.println("Vuoi fare un'altra scommessa? Y/N");
+				risposta = s.nextLine().toUpperCase();
+
+			} while (!risposta.toUpperCase().equals("Y") && !risposta.toUpperCase().equals("N"));
+
 		}
 		
-		if (quote==0) {play=play-1;
-						if (play==0) {/*TODO SISTEMARE IL METODO OUT DA ROULETTE */}}
+		ri.game(id, allQuote, allNum, play);
+
+		
 		s.close();
-		
-		
-		
-		
+
 	}
-	
+
 }
