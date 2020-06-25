@@ -49,10 +49,10 @@ public class Player extends Thread {
 
 			int number = -1; // obbligo ad entrare nel while
 
-			while ((number < 0) || (number > 37)) {
-				System.out.println("Inserisci il numero da 0 a 37");
+			while ((number < 0) || (number > 36)) {
+				System.out.println("Inserisci il numero da 0 a 36");
 				number = s.nextInt();
-				if ((number < 0) || (number > 37)) {
+				if ((number < 0) || (number > 36)) {
 					System.out.println("Mi dispiace, il numero non è valido");
 				} else {
 					allNum.add(number);
