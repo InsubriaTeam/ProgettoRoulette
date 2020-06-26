@@ -54,8 +54,10 @@ public class Roulette extends UnicastRemoteObject implements RouletteInterface
             mPlayers = new ArrayList<Player>();      
         }   
         
-        public boolean busy(ArrayList<Player> players)//controllo il numero dei giocatori nella partita
-        {
+       
+        @Override
+		public boolean busy(ArrayList<Player> players) throws RemoteException {
+
             if(players.size()<=10)
             mIsGameOpen=true;//setto la variabile per indicare se c'è ancora posto 
             else
@@ -162,6 +164,14 @@ public class Roulette extends UnicastRemoteObject implements RouletteInterface
         {
             mIsGameRunning = false;
         }
+
+		
+
+		@Override
+		public int winner() throws RemoteException {
+			// TODO Auto-generated method stub
+			return 0;
+		}
     
 }
 	
