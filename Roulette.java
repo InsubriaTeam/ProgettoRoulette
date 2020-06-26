@@ -23,11 +23,13 @@ public class Roulette extends UnicastRemoteObject implements RouletteInterface
                 e.printStackTrace();
             }
         }
+    
         int id;
         ArrayList<Double> allQuote;
         ArrayList<Integer> allNum;
         int play;
         String showmustgoon;
+        
         public void game( int idimp, ArrayList<Double> allQuoteimp, ArrayList<Integer> allNumimp,int playimp,String showmustgoonimp)
         {
             id=idimp;
