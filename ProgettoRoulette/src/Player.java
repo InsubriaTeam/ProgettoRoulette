@@ -33,6 +33,11 @@ public class Player extends Thread {
 		ArrayList<Double> allQuote = new ArrayList<Double>();
 		ArrayList<Integer> allNum = new ArrayList<Integer>();
 
+		if (ri.busy() == true) {
+			System.out.println("Mi dispiace, siamo pieni. Si prega di riprovare");
+			System.exit(0);
+		}
+
 		Scanner s = new Scanner(System.in);
 		System.out.print("Inserisci il tuo ID");
 		int id = s.nextInt();
@@ -68,15 +73,15 @@ public class Player extends Thread {
 
 		}
 
-		showmustgoon="N";
+		showmustgoon = "N";
 		do {
 			System.out.println("Vuoi continuare a giocare? Y/N");
 			showmustgoon = s.nextLine().toUpperCase();
 		} while (!showmustgoon.toUpperCase().equals("Y") && !showmustgoon.toUpperCase().equals("N"));
-		
-		
-		System.out.println("Si vuole ricordare che se si volesse smettere di giocare non serve inserire la quota da scommettere");
-		
+
+		System.out.println(
+				"Si vuole ricordare che se si volesse smettere di giocare non serve inserire la quota da scommettere");
+
 		ri.game(id, allQuote, allNum, play, showmustgoon);
 
 		s.close();

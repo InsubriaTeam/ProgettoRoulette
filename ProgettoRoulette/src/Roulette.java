@@ -72,8 +72,8 @@ public class Roulette extends UnicastRemoteObject implements RouletteInterface
         @Override
       		public boolean busy() throws RemoteException {
 
-                  if(mPlayers.size()<=10)
-                  mIsGameOpen=true;//setto la variabile per indicare se c'è ancora posto 
+                  if(mPlayers.size()<10)
+                  mIsGameOpen=true;//setto la variabile per indicare se si trova ancora posto 
                   else
                   mIsGameOpen=false;
                   return mIsGameOpen;
