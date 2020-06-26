@@ -12,6 +12,7 @@ public class Player extends Thread {
 	double quote = 0;
 	int number;
 	int play = 5;
+	String showmustgoon;
 	RouletteInterface ri;
 
 	public Player(int id) {
@@ -66,10 +67,17 @@ public class Player extends Thread {
 			} while (!risposta.toUpperCase().equals("Y") && !risposta.toUpperCase().equals("N"));
 
 		}
-		
-		ri.game(id, allQuote, allNum, play);
 
+		do {
+			System.out.println("Vuoi continuare a giocare? Y/N");
+			showmustgoon = s.nextLine().toUpperCase();
+		} while (!showmustgoon.toUpperCase().equals("Y") && !showmustgoon.toUpperCase().equals("N"));
 		
+		
+		System.out.println("Si vuole ricordare che se si volesse smettere di giocare non serve inserire la quota da scommettere");
+		
+		ri.game(id, allQuote, allNum, play, showmustgoon);
+
 		s.close();
 
 	}
