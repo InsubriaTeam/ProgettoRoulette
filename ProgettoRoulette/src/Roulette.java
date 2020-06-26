@@ -52,9 +52,7 @@ public class Roulette extends UnicastRemoteObject implements RouletteInterface
         public Roulette() throws RemoteException
         {
             mPlayers = new ArrayList<Player>();      
-        }   
-        
-       
+        }  
       
         
         public void addPlayer(Player g)//Aggiunta dei giocatori alla partita
