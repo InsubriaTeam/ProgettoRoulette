@@ -68,6 +68,7 @@ public class Player extends Thread {
 
 		}
 
+		showmustgoon="N";
 		do {
 			System.out.println("Vuoi continuare a giocare? Y/N");
 			showmustgoon = s.nextLine().toUpperCase();
