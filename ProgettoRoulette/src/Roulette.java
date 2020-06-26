@@ -55,15 +55,7 @@ public class Roulette extends UnicastRemoteObject implements RouletteInterface
         }   
         
        
-        @Override
-		public boolean busy(ArrayList<Player> players) throws RemoteException {
-
-            if(players.size()<=10)
-            mIsGameOpen=true;//setto la variabile per indicare se c'è ancora posto 
-            else
-            mIsGameOpen=false;
-            return mIsGameOpen;
-        }
+      
         
         public void addPlayer(Player g)//Aggiunta dei giocatori alla partita
         {
@@ -76,6 +68,16 @@ public class Roulette extends UnicastRemoteObject implements RouletteInterface
                 return;
             }
         }
+        
+        @Override
+      		public boolean busy() throws RemoteException {
+
+                  if(mPlayers.size()<=10)
+                  mIsGameOpen=true;//setto la variabile per indicare se c'è ancora posto 
+                  else
+                  mIsGameOpen=false;
+                  return mIsGameOpen;
+              }
         
         // svolgimento partita
 
