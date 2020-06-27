@@ -44,7 +44,7 @@ public class Player extends Thread {
 		ArrayList<Double> allQuote = new ArrayList<Double>();
 		ArrayList<Integer> allNum = new ArrayList<Integer>();
 
-		if (ri.busy() == true) {
+		if (ri.busy() == false) {
 			System.out.println("Mi dispiace, siamo pieni. Si prega di riprovare");
 			System.exit(0);
 		}
