@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.awt.*;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
@@ -18,13 +17,7 @@ public class Player extends Thread {
 	public Player(int id) {
 		myID=id; //assegna l'id della sessione creato da MultiClient
 		// creata sessione di gioco
-		try {
-			Registry reg = LocateRegistry.getRegistry();
-			ri = (RouletteInterface) reg.lookup("Roulette");
 
-		} catch (RemoteException | NotBoundException e) {
-			e.printStackTrace();
-		}
 	}
 
 	
@@ -32,6 +25,13 @@ public class Player extends Thread {
 	// ---------------------
 	
 	public void run() {
+		try {
+			Registry reg = LocateRegistry.getRegistry();
+			ri = (RouletteInterface) reg.lookup("Roulette");
+
+		} catch (RemoteException | NotBoundException e) {
+			e.printStackTrace();
+		}
 		try {
 			bet();
 		} catch (RemoteException e) {

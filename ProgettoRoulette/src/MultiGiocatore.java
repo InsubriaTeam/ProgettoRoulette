@@ -1,16 +1,13 @@
 
 public class MultiGiocatore {
 	
-	public MultiGiocatore(){
+
+	private static final int Nthreads = 15;
+
+	public static void main(String[] args) {
+		for(int i=1; i<Nthreads+1; i++) {
+			new Player(i).start();
+		}
 	}
 
-	void myRun(){
-		for (int i=0; i<15; i++) {
-		Player p=new Player(i);
-		p.start();}	
-	}
-	
-	public static void main(String[] args) {
-		new MultiGiocatore().myRun();
-	}
 }
