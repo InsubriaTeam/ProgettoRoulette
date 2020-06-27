@@ -1,3 +1,5 @@
+package Progetto.progetto;
+
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.NotBoundException;
@@ -11,24 +13,28 @@ public class Roulette extends UnicastRemoteObject implements RouletteInterface
 {
     public static void main(String[] args) throws RemoteException, NotBoundException
     {
-        try {
+        try 
+        {
             Roulette r = new Roulette();
             Registry registro = LocateRegistry.createRegistry(1099);
             registro.rebind("Roulette", r);
             System.err.println("Server ready");
-            } catch (Exception e) {
+        } 
+        catch (Exception e) 
+        {
                 System.err.println("Server exception: " + e.toString());
                 e.printStackTrace();
-            }
         }
-    
+
+    }
         int id;
         ArrayList<Double> allQuote;
         ArrayList<Integer> allNum;
         int play;
         String showmustgoon;
-        
-        public void game( int idimp, ArrayList<Double> allQuoteimp, ArrayList<Integer> allNumimp,int playimp,String showmustgoonimp)
+
+        public void game(int idimp, ArrayList<Double> allQuoteimp, ArrayList<Integer> allNumimp, int playimp,
+                String showmustgoonimp) throws RemoteException
         {
             id=idimp;
             allQuote=allQuoteimp;
@@ -44,17 +50,23 @@ public class Roulette extends UnicastRemoteObject implements RouletteInterface
         private Boolean mIsGameOpen;
         private Boolean mIsGameRunning;
 
-        public void removePlayer(Player g) throws RemoteException
-        {
-            mPlayers.remove(g);
-        }
 
+        //richiamo roulette,busy,addplayer, start game
         public Roulette() throws RemoteException
         {
-            mPlayers = new ArrayList<Player>();      
-        }  
-      
+            mPlayers = new ArrayList<Player>();  
+            startGame();    
+        }   
         
+        public boolean busy()//controllo il numero dei giocatori nella partita
+        {
+            if(mPlayers.size()<=10)
+            mIsGameOpen=true;//setto la variabile per indicare se c'è ancora posto 
+            else
+            mIsGameOpen=false;
+            return mIsGameOpen;
+        }
+
         public void addPlayer(Player g)//Aggiunta dei giocatori alla partita
         {
             if (mIsGameOpen)
@@ -66,29 +78,19 @@ public class Roulette extends UnicastRemoteObject implements RouletteInterface
                 return;
             }
         }
-        
-        @Override
-      		public boolean busy() throws RemoteException {
-
-                  if(mPlayers.size()<10)
-                  mIsGameOpen=true;//setto la variabile per indicare se si trova ancora posto 
-                  else
-                  mIsGameOpen=false;
-                  return mIsGameOpen;
-              }
-        
         // svolgimento partita
 
         public void startGame() throws RemoteException 
         {
-            while (mIsGameRunning)        
+            while (mIsGameRunning==true && mPlayers.size()>0)        
             {
                 prepareGame();
 
                 closeBets();
-                int extNumber = lanciaPallina();
+                winner();
+                //int extNumber = lanciaPallina();
 
-                giveAway(extNumber);
+                //giveAway(extNumber);
             }
         }
 
@@ -97,8 +99,14 @@ public class Roulette extends UnicastRemoteObject implements RouletteInterface
  
             for (Player g:mPlayers)
             {
-                if(play==0)//controlla il numero di giocate
+                if(play==0 || showmustgoon != "Y")//controlla il numero di giocate
                 kickOut(g);
+                try 
+                {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
         }
@@ -110,11 +118,14 @@ public class Roulette extends UnicastRemoteObject implements RouletteInterface
 
         public void closeBets()
         {
-            //---------------------metto in sleep il thread delle iscrizioni per 7000 o interrupt sulle iscrizioni
+            mIsGameOpen=false;
         }
         
-        private int lanciaPallina()
+        public int winner()
         {
+         
+            int extractedNumber = generateRandomNumber();
+
             try 
             {
                 Thread.sleep(5000);
@@ -122,7 +133,6 @@ public class Roulette extends UnicastRemoteObject implements RouletteInterface
                 e.printStackTrace();
             }
 
-            int extractedNumber = generateRandomNumber();
             return extractedNumber;
         }
 
@@ -131,17 +141,19 @@ public class Roulette extends UnicastRemoteObject implements RouletteInterface
             return (int) (Math.random() * 35);//randomico
         }
 
-        private void giveAway(int number) throws RemoteException
-        {
-            for (Player g : mPlayers)
-            {
-                verifyBet(number, allNum, allQuote);//-----------controllare il get number che ritorni allNum e non solo number
-            }
-        }
 
-        private int verifyBet(int extNumber, ArrayList<Integer> number, ArrayList<Double> quote)
+        /*private void giveAway(int number) throws RemoteException
         {
-            int sum=0;
+            double vincitatot=0;
+            for (Player g:mPlayers)
+            {
+                vincitatot=(verifyBet(number, allNum, allQuote));
+            }
+        }*/
+
+        /*private double verifyBet(int extNumber, ArrayList<Integer> number, ArrayList<Double> quote)
+        {
+            double sum=0;
             for(int n : number)
             {
                 if (extNumber == n)
@@ -158,20 +170,11 @@ public class Roulette extends UnicastRemoteObject implements RouletteInterface
 
             }
             return sum;
-        }
+        }*/
 
         public void stop()
         {
             mIsGameRunning = false;
         }
-
-		
-
-		@Override
-		public int winner() throws RemoteException {
-			// TODO Auto-generated method stub
-			return 0;
-		}
     
 }
-	
