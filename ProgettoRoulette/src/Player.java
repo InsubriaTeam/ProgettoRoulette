@@ -8,7 +8,7 @@ import java.rmi.registry.LocateRegistry;
 
 public class Player extends Thread {
 
-	int id;
+	int myID;
 	double quote = 0;
 	int number;
 	int play = 5;
@@ -16,6 +16,7 @@ public class Player extends Thread {
 	RouletteInterface ri;
 
 	public Player(int id) {
+		myID=id; //assegna l'id della sessione creato da MultiClient
 		// creata sessione di gioco
 		try {
 			Registry reg = LocateRegistry.getRegistry();
@@ -26,7 +27,17 @@ public class Player extends Thread {
 		}
 	}
 
+	
+	
 	// ---------------------
+	
+	public void run() {
+		try {
+			bet();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public synchronized void bet() throws RemoteException {
 
@@ -39,8 +50,6 @@ public class Player extends Thread {
 		}
 
 		Scanner s = new Scanner(System.in);
-		System.out.print("Inserisci il tuo ID");
-		int id = s.nextInt();
 
 		String risposta = "Y";
 
@@ -82,7 +91,7 @@ public class Player extends Thread {
 		System.out.println(
 				"Si vuole ricordare che se si volesse smettere di giocare non serve inserire la quota da scommettere");
 
-		ri.game(id, allQuote, allNum, play, showmustgoon);
+		ri.game(myID, allQuote, allNum, play, showmustgoon);
 
 		s.close();
 
